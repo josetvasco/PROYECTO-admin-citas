@@ -12,6 +12,7 @@ const contenedorCitas = document.querySelector('#citas');
 
 // Objeto de cita
 const citaObj = {
+  id: generarId(),
   paciente: '',
   propietario: '',
   email: '',
@@ -62,6 +63,7 @@ class AdminCitas {
   }
 
   mostrar() {
+    console.log(citaObj)
     // Linpiar el HTML previo
     while(contenedorCitas.firstChild) {
       contenedorCitas.removeChild(contenedorCitas.firstChild);
@@ -94,8 +96,10 @@ class AdminCitas {
 
       // Botón de agregar y eliminar
       const btnEditar = document.createElement('button');
-      btnEditar.classList.add('py-2', 'px-10', 'bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'font-bold', 'uppercase', 'rounded-lg', 'flex', 'items-center', 'gap-2');
+      btnEditar.classList.add('py-2', 'px-10', 'bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'font-bold', 'uppercase', 'rounded-lg', 'flex', 'items-center', 'gap-2', 'btn-editar');
       btnEditar.innerHTML = 'Editar <svg fill="none" class="h-5 w-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>'
+      const clone = {...cita}
+      btnEditar.onclick = () => cargarEdicion(clone);
 
       const btnEliminar = document.createElement('button');
       btnEliminar.classList.add('py-2', 'px-10', 'bg-red-600', 'hover:bg-red-700', 'text-white', 'font-bold', 'uppercase', 'rounded-lg', 'flex', 'items-center', 'gap-2');
@@ -104,8 +108,8 @@ class AdminCitas {
       const contenedorBotones = document.createElement('DIV');
       contenedorBotones.classList.add('flex', 'justify-between', 'mt-10');
 
-      contenedorBotones.appendChild(btnEditar)
-      contenedorBotones.appendChild(btnEliminar)
+      contenedorBotones.appendChild(btnEditar);
+      contenedorBotones.appendChild(btnEliminar);
       // Agregar al HTML
       divCita.appendChild(paciente);
       divCita.appendChild(propietario);
@@ -154,12 +158,27 @@ function submitCita(e) {
 
 function reiniciarObjetoCita() {
   Object.assign(citaObj, {
+    id: generarId(),
     paciente: '',
     propietario: '',
     email: '',
     fecha: '',
     sintomas: ''
   })
+}
+
+function generarId() {
+  return Math.random().toString(36).substring(2) + Date.now();
+}
+
+function cargarEdicion(cita) {
+  Object.assign(citaObj, cita);
+  
+  pacienteInput.value = cita.paciente;
+  propietarioInput.value = cita.propietario;
+  emailInput.value = cita.email;
+  fechaInput.value = cita.fecha;
+  sintomasInput.value = cita.sintomas;
 }
 
 
