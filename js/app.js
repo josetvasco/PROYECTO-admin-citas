@@ -24,7 +24,6 @@ class Notificacion {
     this.texto = texto;
     this.tipo = tipo;
     
-    
     this.mostrar();
   }
 
@@ -129,9 +128,13 @@ function submitCita(e) {
     return;
   }
 
-  citas.agregar(citaObj);
+  citas.agregar({ ...citaObj });
   formulario.reset();
   reiniciarObjetoCita();
+  new Notificacion({
+    texto: 'Cita agregada correctamente',
+    tipo: 'exito'
+  })
 }
 
 function reiniciarObjetoCita() {
